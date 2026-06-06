@@ -82,6 +82,7 @@ export interface WeatherCell {
   bounds: [LatLng, LatLng, LatLng, LatLng]; // sw, se, ne, nw
   precipNowMm: number; // near-term intensity
   precipMaxMm: number; // peak over the forecast window
+  precipTotalMm: number; // expected accumulated rainfall over the window (mm)
   probabilityPct: number;
   windowLabel: string; // e.g. "now – 60 min"
 }
@@ -111,7 +112,7 @@ export interface TopographyZone {
   minElevM?: number; // lowest sampled elevation in the zone (m), when elevation-derived
 }
 
-export type LayerKey = "street" | "weather" | "topography";
+export type LayerKey = "street" | "weather" | "topography" | "manholes" | "rainfall";
 export type LayerState = Record<LayerKey, boolean>;
 
 // Drives which modal / in-map panel is open.

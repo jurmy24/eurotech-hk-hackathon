@@ -14,18 +14,20 @@ export function useWeather() {
     let cancelled = false;
 
     const run = async () => {
-      let cells;
+      let snapshot;
       let error = false;
       try {
-        cells = await fetchWeatherCells();
+        snapshot = await fetchWeatherCells();
       } catch {
-        cells = fallbackWeatherCells();
+        snapshot = fallbackWeatherCells();
         error = true;
       }
       if (cancelled) return;
+      const { cells, forecast } = snapshot;
 
       const st = useOpsStore.getState();
       st.setWeather(cells, Date.now(), error);
+      st.setForecast(forecast);
       st.setDrainRain(computeDrainRain(st.drains, cells));
 
       const next = useOpsStore.getState();

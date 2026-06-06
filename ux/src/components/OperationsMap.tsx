@@ -48,8 +48,12 @@ export default function OperationsMap({ children, onReady }: Props) {
     mapRef.current = map;
 
     let styleIdx = 0;
+    let styleLoaded = false;
     map.on("error", (e) => {
-      // If the primary tile source fails, fall back once to a keyless alternative.
+      // Only fall back if the *primary basemap* never loaded. Once the basemap is
+      // up, ignore errors — otherwise a failing overlay tile (e.g. radar) would
+      // trip "tiles/load/fetch" and wipe the whole style + every custom layer.
+      if (styleLoaded) return;
       const msg = String((e as any)?.error?.message ?? "");
       if (styleIdx === 0 && /style|tiles|fetch|load/i.test(msg)) {
         styleIdx = 1;
@@ -59,6 +63,7 @@ export default function OperationsMap({ children, onReady }: Props) {
     });
 
     const handleLoad = () => {
+      styleLoaded = true;
       applyNeonStyle(map);
       setMapInstance(map);
       if (import.meta.env.DEV) (window as any).__map = map; // dev/verification handle

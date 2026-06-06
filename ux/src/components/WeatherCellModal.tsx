@@ -19,6 +19,7 @@ export default function WeatherCellModal({ cellId, onClose }: { cellId: string; 
       </div>
       <div className="m-grid two">
         <Stat label="Peak intensity"><span className="big-num tabular">{cell.precipMaxMm}</span> mm</Stat>
+        <Stat label="Expected · 24h"><span className="big-num tabular">{cell.precipTotalMm}</span> mm</Stat>
         <Stat label="Probability"><span className="big-num tabular">{cell.probabilityPct}</span>%</Stat>
         <Stat label="Now"><span className="tabular">{cell.precipNowMm} mm</span></Stat>
         <Stat label="Location"><span className="tabular">{cell.center.lat.toFixed(3)}, {cell.center.lng.toFixed(3)}</span></Stat>
