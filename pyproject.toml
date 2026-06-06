@@ -6,4 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "feetech-servo-sdk>=1.0.0",
+    "lerobot[hardware,rebot,training]",
 ]
+
+[tool.uv.sources]
+lerobot = { git = "https://github.com/huggingface/lerobot.git" }
