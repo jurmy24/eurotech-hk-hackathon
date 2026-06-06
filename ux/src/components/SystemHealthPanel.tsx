@@ -15,7 +15,6 @@ export default function SystemHealthPanel({ onClose }: { onClose: () => void }) 
 
   const by = (st: CrewStatus) => crews.filter((c) => c.status === st).length;
   const offline = crews.filter((c) => c.comms === "offline").length;
-  const lowBatt = crews.filter((c) => c.batteryPct <= 20).length;
   const activeDisp = dispatches.filter((d) => d.status !== "complete" && d.status !== "cancelled").length;
   const crit = alerts.filter((a) => a.level === "AL-5").length;
   const headline = crit > 0 ? "Critical Incidents Active" : offline > 0 ? "Degraded — Crew Offline" : "All Systems Operational";
@@ -35,7 +34,6 @@ export default function SystemHealthPanel({ onClose }: { onClose: () => void }) 
         <Stat label="Active"><span className="big-num tabular">{by("active")}</span></Stat>
         <Stat label="Servicing"><span className="big-num tabular">{by("servicing")}</span></Stat>
         <Stat label="Offline / lost comms"><span className="big-num tabular">{offline}</span></Stat>
-        <Stat label="Low battery ≤20%"><span className="big-num tabular">{lowBatt}</span></Stat>
         <Stat label="Active dispatches"><span className="big-num tabular">{activeDisp}</span></Stat>
         <Stat label="Drains monitored"><span className="big-num tabular">{drains.length}</span></Stat>
         <Stat label="Active alerts"><span className="big-num tabular">{alerts.length}</span></Stat>

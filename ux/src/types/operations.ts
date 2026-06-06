@@ -18,7 +18,6 @@ export interface RobotCrew {
   alertLevel: AlertLevel; // seed value; live value comes from the animation loop
   location: LatLng; // seed value; live value comes from the animation loop
   headingDeg?: number;
-  batteryPct: number;
   status: CrewStatus;
   activeDispatchId?: string;
   etaMinutes?: number;

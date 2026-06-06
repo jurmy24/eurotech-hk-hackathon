@@ -26,7 +26,7 @@ export default function DispatchDetailModal({ dispatchId, onClose }: { dispatchI
         <span className={"code code-" + d.status}>{d.status}</span>
       </div>
       <div className="m-grid two">
-        <Stat label="Crew">{crew?.name ?? d.crewId}</Stat>
+        <Stat label="Crew">{d.crewId}</Stat>
         <Stat label="Destination">{drain?.name ?? d.drainId}</Stat>
         <Stat label="ETA"><span className="tabular">{d.etaMinutes ?? "—"} min</span></Stat>
         <Stat label="Created">{new Date(d.createdAt).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</Stat>

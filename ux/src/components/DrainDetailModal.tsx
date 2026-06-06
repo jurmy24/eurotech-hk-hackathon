@@ -75,7 +75,7 @@ export default function DrainDetailModal({ drainId, onClose }: { drainId: string
           <div className="rec-done"><CheckCircle2 size={16} /> Dispatch created and added to the queue.</div>
         ) : rec ? (
           <div className="rec-card">
-            <div className="rec-row"><span className="rec-k">Recommended crew</span><span className="rec-v">{rec.crew.id} · {rec.crew.name}</span></div>
+            <div className="rec-row"><span className="rec-k">Recommended crew</span><span className="rec-v">{rec.crew.id}</span></div>
             <div className="rec-row"><span className="rec-k">Distance</span><span className="rec-v tabular">{rec.distanceKm} km</span></div>
             <div className="rec-row"><span className="rec-k">ETA</span><span className="rec-v tabular">{rec.etaMinutes} min</span></div>
             <div className="rec-row"><span className="rec-k">Risk note</span><span className="rec-v">{rec.note}</span></div>

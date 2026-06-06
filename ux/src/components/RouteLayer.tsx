@@ -21,6 +21,13 @@ export default function RouteLayer() {
   const map = useMapInstance();
   const selection = useOpsStore((s) => s.selection);
   const crewId = selection?.type === "crew" ? selection.id : null;
+  // A crew that's parked & cleaning has no meaningful patrol route to draw.
+  const working = useOpsStore((s) => {
+    if (!crewId) return false;
+    const c = s.crews.find((x) => x.id === crewId);
+    if (!c?.activeDispatchId) return false;
+    return s.dispatches.find((d) => d.id === c.activeDispatchId)?.status === "working";
+  });
 
   useEffect(() => {
     if (!map || map.getSource(SRC)) return;
@@ -45,8 +52,8 @@ export default function RouteLayer() {
   useEffect(() => {
     const src = map?.getSource(SRC) as maplibregl.GeoJSONSource | undefined;
     if (!src) return;
-    src.setData(crewId ? line(crewPathLngLat(crewId)) : empty);
-  }, [map, crewId]);
+    src.setData(crewId && !working ? line(crewPathLngLat(crewId)) : empty);
+  }, [map, crewId, working]);
 
   return null;
 }

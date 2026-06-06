@@ -19,6 +19,23 @@ export const ALERT_LABELS: Record<AlertLevel, string> = {
   "AL-5": "Critical Alert",
 };
 
+// Per-crew "zone risk" — the local conditions at a crew's current position.
+// Shares the AlertLevel scale/colors but is labeled distinctly so it isn't
+// confused with the system-wide ALERT level (see StatusCard).
+export const ZONE_LABELS: Record<AlertLevel, string> = {
+  "AL-0": "Normal",
+  "AL-1": "Low Risk",
+  "AL-2": "Moderate Risk",
+  "AL-3": "Elevated Risk",
+  "AL-4": "High Risk",
+  "AL-5": "Critical Risk",
+};
+
+// "AL-3" -> "Z-3" for the crew-facing zone-risk chip.
+export function zoneCode(level: AlertLevel): string {
+  return level.replace("AL", "Z");
+}
+
 export const STATUS_HEX: Record<CrewStatus, string> = {
   available: "#22e07a",
   active: "#36e2ff",

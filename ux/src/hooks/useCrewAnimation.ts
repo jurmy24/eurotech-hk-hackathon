@@ -21,8 +21,24 @@ function sample(wps: Waypoint[], t: number) {
   return { lat: a.lat + (b.lat - a.lat) * f, lng: a.lng + (b.lng - a.lng) * f, a, b };
 }
 
+// Crews whose assigned dispatch is "working" are parked on their task site
+// (stationary, cleaning) instead of running their patrol waypoints.
+function workingSites(): Record<string, { lat: number; lng: number }> {
+  const { crews, dispatches, drains } = useOpsStore.getState();
+  const sites: Record<string, { lat: number; lng: number }> = {};
+  for (const c of crews) {
+    if (!c.activeDispatchId) continue;
+    const d = dispatches.find((x) => x.id === c.activeDispatchId);
+    if (d?.status !== "working") continue;
+    const drain = drains.find((dr) => dr.id === d.drainId);
+    if (drain) sites[c.id] = { lat: drain.location.lat, lng: drain.location.lng };
+  }
+  return sites;
+}
+
 // Drives smooth crew motion: markers move every animation frame (imperative,
 // jank-free), while store telemetry updates on a throttle. Loops seamlessly at 180s.
+// Crews actively cleaning are pinned to their task site (see workingSites).
 export function useCrewAnimation(
   markersRef: MutableRefObject<Record<string, maplibregl.Marker>>,
 ) {
@@ -36,23 +52,39 @@ export function useCrewAnimation(
 
     const tick = (now: number) => {
       const t = ((now - startMs) / 1000) % LOOP_SEC;
+      const sites = workingSites();
       const live: Record<string, LivePosition> = {};
       for (const id in waypoints) {
         const wps = waypoints[id];
-        const { lat, lng, a, b } = sample(wps, t);
-        const segKm = haversineKm(a, b);
+        const site = sites[id];
+        let lat: number;
+        let lng: number;
+        let speed: number;
         let heading = headings[id] ?? 0;
-        if (segKm > 0.0005) {
-          heading = bearingDeg(a, b);
-          headings[id] = heading;
+        let alert = wps[0].alert;
+        if (site) {
+          // Parked on task site — stationary while cleaning.
+          lat = site.lat;
+          lng = site.lng;
+          speed = 0;
+        } else {
+          const s = sample(wps, t);
+          lat = s.lat;
+          lng = s.lng;
+          alert = s.a.alert;
+          const segKm = haversineKm(s.a, s.b);
+          if (segKm > 0.0005) {
+            heading = bearingDeg(s.a, s.b);
+            headings[id] = heading;
+          }
+          const spanH = (s.b.t - s.a.t || 1) / 3600;
+          speed = Math.round((segKm / spanH) * 10) / 10;
         }
-        const spanH = (b.t - a.t || 1) / 3600;
-        const speed = Math.round((segKm / spanH) * 10) / 10;
         live[id] = {
           lat,
           lng,
           headingDeg: heading,
-          alertLevel: a.alert,
+          alertLevel: alert,
           speedKph: speed,
           lastUpdate: Date.now(),
         };

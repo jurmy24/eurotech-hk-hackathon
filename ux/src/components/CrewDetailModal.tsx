@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Battery, Radio, Navigation, Gauge, Clock, Users, Route } from "lucide-react";
+import { Radio, Navigation, Gauge, Clock, Users, Route } from "lucide-react";
 import Modal from "./Modal";
 import Stat from "./Stat";
 import { useOpsStore } from "../store/useOpsStore";
-import { ALERT_HEX, ALERT_LABELS, STATUS_LABELS, COMMS_LABELS, timeAgo } from "../lib/format";
+import { ALERT_HEX, ZONE_LABELS, zoneCode, STATUS_LABELS, COMMS_LABELS, timeAgo } from "../lib/format";
 
 export default function CrewDetailModal({ crewId, onClose }: { crewId: string; onClose: () => void }) {
   const crew = useOpsStore((s) => s.crews.find((c) => c.id === crewId));
@@ -22,7 +22,6 @@ export default function CrewDetailModal({ crewId, onClose }: { crewId: string; o
   const alert = live?.alertLevel ?? crew.alertLevel;
   const heading = Math.round(live?.headingDeg ?? crew.headingDeg ?? 0);
   const speed = live?.speedKph ?? 0;
-  const battColor = crew.batteryPct > 50 ? "var(--al-0)" : crew.batteryPct > 20 ? "var(--al-2)" : "var(--al-5)";
   const activeDisp = dispatches.find((d) => d.id === crew.activeDispatchId);
   const destDrain = activeDisp ? drains.find((dr) => dr.id === activeDisp.drainId) : undefined;
   const history = dispatches.filter((d) => d.crewId === crew.id);
@@ -34,21 +33,17 @@ export default function CrewDetailModal({ crewId, onClose }: { crewId: string; o
         <div>
           <div className="m-eyebrow">Robot Crew</div>
           <h2 className="m-title">{crew.id}</h2>
-          <div className="m-sub">{crew.name} · {crew.model}</div>
+          <div className="m-sub">{crew.model}</div>
         </div>
         <div className="m-status">
           <span className="m-led" style={{ background: `var(--status-${crew.status})` }} />
           <span>{STATUS_LABELS[crew.status]}</span>
-          <span className="al-chip big" style={{ color: ALERT_HEX[alert], borderColor: ALERT_HEX[alert] }}>{alert}</span>
-          <span className="m-alabel">{ALERT_LABELS[alert]}</span>
+          <span className="al-chip big" style={{ color: ALERT_HEX[alert], borderColor: ALERT_HEX[alert] }} title="Zone risk">{zoneCode(alert)}</span>
+          <span className="m-alabel">{ZONE_LABELS[alert]}</span>
         </div>
       </div>
 
       <div className="m-grid">
-        <Stat icon={<Battery size={15} />} label="Battery">
-          <div className="batt"><span className="batt-fill" style={{ width: `${crew.batteryPct}%`, background: battColor }} /></div>
-          <span className="tabular">{crew.batteryPct}%</span>
-        </Stat>
         <Stat icon={<Gauge size={15} />} label="Speed"><span className="big-num tabular">{speed}</span> km/h</Stat>
         <Stat icon={<Navigation size={15} />} label="Heading"><span className="big-num tabular">{heading}°</span></Stat>
         <Stat icon={<Radio size={15} />} label="Comms"><span className={"chip comms-" + crew.comms}>{COMMS_LABELS[crew.comms]}</span></Stat>

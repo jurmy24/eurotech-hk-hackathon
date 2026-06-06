@@ -1,4 +1,4 @@
-import { AlertTriangle, Droplet, Radio, BatteryWarning, CloudRain } from "lucide-react";
+import { AlertTriangle, Droplet, Radio, CloudRain } from "lucide-react";
 import type { ReactNode } from "react";
 import Modal from "./Modal";
 import { useOpsStore } from "../store/useOpsStore";
@@ -10,7 +10,7 @@ const KIND_ICON: Record<AlertKind, ReactNode> = {
   flooding: <CloudRain size={16} />,
   blocked_drain: <Droplet size={16} />,
   lost_comms: <Radio size={16} />,
-  low_battery: <BatteryWarning size={16} />,
+  low_battery: <Radio size={16} />,
   weather_topography: <AlertTriangle size={16} />,
 };
 

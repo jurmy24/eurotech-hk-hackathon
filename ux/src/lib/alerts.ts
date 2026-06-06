@@ -21,33 +21,6 @@ export function deriveAlerts(
 ): OpsAlert[] {
   const out: OpsAlert[] = [];
 
-  for (const c of crews) {
-    if (c.comms === "offline") {
-      out.push({
-        id: `AL-COMMS-${c.id}`,
-        kind: "lost_comms",
-        level: "AL-4",
-        title: `Lost comms — ${c.id}`,
-        detail: `${c.name} is offline. Dispatch and reroute actions are disabled until comms recover.`,
-        entityType: "crew",
-        entityId: c.id,
-        createdAt: nowIso,
-      });
-    }
-    if (c.batteryPct <= 20) {
-      out.push({
-        id: `AL-BATT-${c.id}`,
-        kind: "low_battery",
-        level: c.batteryPct <= 12 ? "AL-4" : "AL-3",
-        title: `Low battery — ${c.id}`,
-        detail: `${c.name} battery at ${c.batteryPct}%. Recommend return-to-base or hot-swap.`,
-        entityType: "crew",
-        entityId: c.id,
-        createdAt: nowIso,
-      });
-    }
-  }
-
   for (const d of drains) {
     if (d.nearRainForecast && d.blockageRiskPct >= 60) {
       out.push({
