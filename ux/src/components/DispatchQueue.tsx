@@ -1,4 +1,5 @@
-import { Send, X } from "lucide-react";
+import { Send, X, Plus } from "lucide-react";
+import CollapsibleCard from "./CollapsibleCard";
 import { useOpsStore } from "../store/useOpsStore";
 import type { DispatchStatus } from "../types/operations";
 
@@ -13,7 +14,6 @@ const STATUS_CODE: Record<DispatchStatus, string> = {
 
 export default function DispatchQueue() {
   const dispatches = useOpsStore((s) => s.dispatches);
-  const crews = useOpsStore((s) => s.crews);
   const drains = useOpsStore((s) => s.drains);
   const select = useOpsStore((s) => s.select);
   const update = useOpsStore((s) => s.updateDispatch);
@@ -21,10 +21,10 @@ export default function DispatchQueue() {
   const active = dispatches.filter((d) => d.status !== "cancelled" && d.status !== "complete");
 
   return (
-    <section className="card glass">
-      <h3 className="card-title">
-        <Send size={14} /> Dispatched
-      </h3>
+    <CollapsibleCard title="Dispatched" icon={<Send size={14} />} badge={<span className="count-badge">{active.length}</span>}>
+      <button className="btn-row" onClick={() => select({ type: "dispatch-planning" })}>
+        <Plus size={13} /> Plan a dispatch
+      </button>
       <div className="dispatch-list">
         {active.map((d) => {
           const drain = drains.find((x) => x.id === d.drainId);
@@ -66,6 +66,6 @@ export default function DispatchQueue() {
         })}
         {active.length === 0 && <div className="empty">No active dispatches.</div>}
       </div>
-    </section>
+    </CollapsibleCard>
   );
 }

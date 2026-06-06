@@ -62,7 +62,7 @@
 /* ============================ Sidebar ============================ */
 .sidebar {
   position: absolute;
-  top: calc(var(--topbar-h) + var(--sp-3));
+  top: var(--sp-3);
   left: var(--sp-3);
   bottom: var(--sp-3);
   width: var(--rail-w);
@@ -228,7 +228,7 @@
 /* ============================ Map controls ============================ */
 .map-controls {
   position: absolute;
-  top: calc(var(--topbar-h) + var(--sp-3));
+  top: var(--sp-3);
   right: var(--sp-3);
   z-index: var(--z-overlay);
   display: flex;
@@ -289,8 +289,169 @@
 .dot.drain { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
 .dot.drain-rain { background: var(--magenta); box-shadow: 0 0 8px var(--magenta); }
 .swatch { width: 14px; height: 10px; border-radius: 3px; flex: none; }
-.swatch.rain { background: linear-gradient(90deg, rgba(54, 226, 255, 0.4), rgba(77, 140, 255, 0.55)); }
+.swatch.rain { width: 28px; background: linear-gradient(90deg, #481c96, #9628c8, #ec407a, #ff8a28, #ffe880); }
 .swatch.topo { background: repeating-linear-gradient(45deg, rgba(255, 157, 46, 0.45), rgba(255, 157, 46, 0.45) 3px, transparent 3px, transparent 6px); }
+.swatch.rainfall { width: 28px; background: linear-gradient(90deg, #36e2ff, #22e07a, #f4d423, #ff9d2e, #ff2d4f); }
+.dot.mh-storm { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.dot.mh-sewer { background: #ffb35a; box-shadow: 0 0 6px #ffb35a; }
+.dot.mh-combined { background: #b388ff; box-shadow: 0 0 6px #b388ff; }
+
+/* ===================== Weather radar timeline ===================== */
+.weather-timeline {
+  position: absolute;
+  bottom: var(--sp-3);
+  left: calc(var(--rail-w) + var(--sp-5));
+  right: 256px;
+  z-index: var(--z-overlay);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 14px;
+}
+.wt-play {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border-strong);
+  background: rgba(120, 200, 255, 0.08);
+  color: var(--cyan-soft);
+  cursor: pointer;
+  transition: 0.15s;
+}
+.wt-play:hover { border-color: var(--cyan); box-shadow: var(--glow-cyan); }
+.wt-main { flex: 1; min-width: 0; }
+.wt-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-bottom: 7px;
+  font-variant-numeric: tabular-nums;
+}
+.wt-current { color: var(--cyan-soft); font-weight: 600; font-size: 13px; letter-spacing: 0.03em; }
+.wt-current em {
+  margin-left: 7px;
+  font-style: normal;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.wt-track { position: relative; height: 18px; cursor: pointer; touch-action: none; }
+.wt-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  transform: translateY(-50%);
+  background: rgba(120, 200, 255, 0.16);
+  border-radius: 3px;
+}
+.wt-fill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 3px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  border-radius: 3px;
+  box-shadow: var(--glow-cyan);
+}
+.wt-ticks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.wt-tick { width: 2px; height: 7px; border-radius: 2px; background: rgba(120, 200, 255, 0.35); }
+.wt-tick.future { background: rgba(255, 61, 242, 0.5); }
+.wt-tick.active { height: 11px; background: var(--cyan-soft); }
+.wt-head {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--cyan-soft);
+  border: 2px solid #04121f;
+  box-shadow: var(--glow-cyan);
+  pointer-events: none;
+}
+/* Boundary between observed radar and forecast hours. */
+.wt-current.forecast { color: var(--magenta-soft); }
+.wt-now {
+  position: absolute;
+  top: 50%;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  border-left: 1px dashed rgba(255, 138, 235, 0.8);
+  pointer-events: none;
+  z-index: 2;
+}
+.wt-now span {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--magenta-soft);
+}
+.wt-tag {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+.wt-tag svg { color: var(--cyan); }
+@media (max-width: 900px) {
+  .weather-timeline { left: var(--sp-3); right: var(--sp-3); }
+  .wt-tag { display: none; }
+}
+
+/* "Zoom in to reveal manholes" hint — transient pill, top-centre of the map. */
+.manhole-hint {
+  position: absolute;
+  top: var(--sp-3);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-overlay);
+  padding: 6px 12px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--cyan-soft);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Dark-theme MapLibre popup for manhole detail. */
+.mh-popup .maplibregl-popup-content {
+  background: rgba(7, 11, 20, 0.94);
+  border: 1px solid var(--cyan);
+  border-radius: 8px;
+  box-shadow: var(--glow-cyan);
+  color: var(--text);
+  padding: 8px 12px;
+}
+.mh-popup .maplibregl-popup-tip { display: none; }
+.mh-popup .maplibregl-popup-close-button { color: var(--text-dim); font-size: 16px; }
+.mh-pop { display: flex; flex-direction: column; gap: 2px; }
+.mh-pop strong { color: var(--cyan-soft); font-size: 13px; letter-spacing: 0.04em; }
+.mh-pop span { color: var(--text-dim); font-size: 11px; }
 
 /* ============================ Status strip ============================ */
 .status-strip {
@@ -316,12 +477,21 @@
 .strip-flash { color: var(--cyan-soft); white-space: nowrap; }
 
 /* ============================ Crew markers ============================ */
-.crew-marker-container { will-change: transform; }
+/* line-height:0 collapses the inline line-box so the container's height equals the
+   triangle's (no descent), keeping the triangle centred on the pinned coordinate. */
+.crew-marker-container { will-change: transform; line-height: 0; font-size: 0; }
+/* The marker box must be ONLY the triangle so MapLibre's `anchor: center`
+   pins the triangle (the crew's real position) to the coordinate. The tag/tip
+   are absolutely positioned so they don't widen the box — otherwise the centred
+   point lands between triangle and tag, putting the triangle a fixed ~28px off,
+   which reads as a zoom-dependent drift off the road (large offset zoomed out). */
 .crew-marker {
   position: relative;
-  display: flex;
+  display: inline-flex;
+  width: 16px;
+  height: 15px;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
   cursor: pointer;
 }
 .crew-marker.dim { opacity: 0.32; }
@@ -341,6 +511,10 @@
   animation: none;
 }
 .crew-tag {
+  position: absolute;
+  left: calc(100% + 5px);
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -371,6 +545,46 @@
 }
 .crew-marker:hover .crew-tip { display: block; }
 .crew-marker:hover { z-index: 6; }
+
+/* Active-cleaning state: pulsing rings + badge. Rings/badge are absolutely
+   positioned so they don't widen the centred marker box (preserves anchoring). */
+.crew-work-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cyan);
+  opacity: 0;
+  animation: crew-work-ping 1.8s ease-out infinite;
+  pointer-events: none;
+}
+.crew-work-ring.d2 { animation-delay: 0.9s; }
+@keyframes crew-work-ping {
+  0% { transform: scale(0.4); opacity: 0.85; }
+  70% { opacity: 0.18; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+.crew-work-badge {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #02121a;
+  background: var(--cyan);
+  padding: 1px 4px;
+  border-radius: 4px;
+  white-space: nowrap;
+  box-shadow: 0 0 8px var(--cyan);
+  animation: crew-work-breathe 1.4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes crew-work-breathe { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 
 /* ============================ Drain markers ============================ */
 .drain-marker { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; }
@@ -554,6 +768,90 @@
 .chip.small { font-size: 10px; padding: 1px 7px; }
 .plan-risk { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-dim); }
 .batt.mini { width: 70px; min-width: 70px; height: 6px; }
+
+/* ============================ Collapsible cards ============================ */
+.card-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+.card-toggle .card-title { margin: 0; }
+.card-toggle-right { display: flex; align-items: center; gap: 8px; }
+.chev { color: var(--text-faint); transition: transform 0.2s; flex: none; }
+.chev.open { transform: rotate(180deg); }
+.card-body { margin-top: var(--sp-3); }
+.count-badge {
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-pill);
+  background: rgba(54, 226, 255, 0.14);
+  color: var(--cyan-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.led-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.led-dot.ok { background: var(--al-0); box-shadow: 0 0 7px var(--al-0); }
+.led-dot.warn { background: var(--al-3); box-shadow: 0 0 7px var(--al-3); }
+.led-dot.crit { background: var(--al-5); box-shadow: 0 0 7px var(--al-5); animation: glow-breathe 1.4s infinite; }
+.al-chip.mini { font-size: 10px; padding: 1px 5px; }
+.status-chip.wide { width: 100%; border: 0; cursor: pointer; text-align: left; }
+.meta-link {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font-size: 12px;
+}
+.meta-link:hover .meta-v { color: var(--cyan-soft); }
+.btn-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 7px;
+  border: 1px dashed var(--glass-border-strong);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  margin-bottom: var(--sp-3);
+}
+.btn-row:hover { border-color: var(--cyan); color: var(--cyan-soft); }
+.flex-spacer { flex: 1; }
+.layer-name { flex: 1; font-size: 13px; }
+
+/* Transient toast (replaces the old bottom status strip) */
+.toast {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-overlay);
+  padding: 9px 16px;
+  font-size: 13px;
+  color: var(--cyan-soft);
+  border-color: var(--glass-border-strong);
+  white-space: nowrap;
+  animation: fade-in 0.2s ease;
+}
+
+.legend.collapsed { width: auto; }
 
 /* ============================ Responsive ============================ */
 @media (max-width: 1100px) {

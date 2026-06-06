@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 import { Bot, Search } from "lucide-react";
+import CollapsibleCard from "./CollapsibleCard";
 import { useOpsStore } from "../store/useOpsStore";
-import { STATUS_LABELS, ALERT_HEX } from "../lib/format";
+import { STATUS_LABELS, ALERT_HEX, ZONE_LABELS, zoneCode } from "../lib/format";
+import { getMapInstance } from "../lib/mapRef";
 import type { CrewStatus } from "../types/operations";
 
 const STATUSES: CrewStatus[] = ["available", "active", "servicing", "offline"];
@@ -29,16 +31,11 @@ export default function CrewSummary() {
 
   const q = search.trim().toLowerCase();
   const list = crews.filter(
-    (c) =>
-      (filter === "all" || c.status === filter) &&
-      (!q || c.id.toLowerCase().includes(q) || c.name.toLowerCase().includes(q)),
+    (c) => (filter === "all" || c.status === filter) && (!q || c.id.toLowerCase().includes(q)),
   );
 
   return (
-    <section className="card glass">
-      <h3 className="card-title">
-        <Bot size={14} /> Crews
-      </h3>
+    <CollapsibleCard title="Crews" icon={<Bot size={14} />} badge={<span className="count-badge">{crews.length}</span>}>
       <div className="search">
         <Search size={13} />
         <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search crews…" />
@@ -62,19 +59,25 @@ export default function CrewSummary() {
         {list.map((c) => {
           const lvl = live[c.id]?.alertLevel ?? c.alertLevel;
           return (
-            <button key={c.id} className="crew-item" onClick={() => select({ type: "crew", id: c.id })}>
+            <button
+              key={c.id}
+              className="crew-item"
+              onClick={() => {
+                const loc = live[c.id] ?? c.location;
+                getMapInstance()?.flyTo({ center: [loc.lng, loc.lat], zoom: 14.5 });
+                select({ type: "crew", id: c.id });
+              }}
+              title={STATUS_LABELS[c.status]}
+            >
               <span className="crew-led" style={{ background: `var(--status-${c.status})` }} />
               <span className="crew-id">{c.id}</span>
-              <span className="crew-name">{c.name}</span>
-              <span className="al-chip" style={{ color: ALERT_HEX[lvl], borderColor: ALERT_HEX[lvl] }}>
-                {lvl}
-              </span>
-              <span className="crew-batt tabular">{c.batteryPct}%</span>
+              <span className="flex-spacer" />
+              <span className="al-chip" style={{ color: ALERT_HEX[lvl], borderColor: ALERT_HEX[lvl] }} title={`Zone risk · ${ZONE_LABELS[lvl]}`}>{zoneCode(lvl)}</span>
             </button>
           );
         })}
         {list.length === 0 && <div className="empty">No crews match.</div>}
       </div>
-    </section>
+    </CollapsibleCard>
   );
 }

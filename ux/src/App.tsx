@@ -2,15 +2,18 @@ import { useEffect } from "react";
 import OperationsMap from "./components/OperationsMap";
 import MapLayersController from "./components/MapLayersController";
 import CrewLayer from "./components/CrewLayer";
-import DrainLayer from "./components/DrainLayer";
 import WeatherLayer from "./components/WeatherLayer";
+import RadarLayer from "./components/RadarLayer";
+import TerrainLayer from "./components/TerrainLayer";
 import TopographyLayer from "./components/TopographyLayer";
+import ManholeLayer from "./components/ManholeLayer";
+import RainfallHeatmapLayer from "./components/RainfallHeatmapLayer";
 import { useWeather } from "./hooks/useWeather";
-import TopBar from "./components/TopBar";
 import Sidebar from "./components/Sidebar";
 import MapControls from "./components/MapControls";
 import Legend from "./components/Legend";
-import StatusStrip from "./components/StatusStrip";
+import WeatherTimeline from "./components/WeatherTimeline";
+import Toast from "./components/Toast";
 import RouteLayer from "./components/RouteLayer";
 import CrewDetailModal from "./components/CrewDetailModal";
 import DrainDetailModal from "./components/DrainDetailModal";
@@ -21,7 +24,7 @@ import AlertsPanel from "./components/AlertsPanel";
 import SystemHealthPanel from "./components/SystemHealthPanel";
 import { useOpsStore } from "./store/useOpsStore";
 import { CREWS, DRAINS, DISPATCHES } from "./data/mockOperations";
-import { TOPOGRAPHY_ZONES } from "./data/hkGeo";
+import { TOPOGRAPHY_ZONES } from "./lib/topography";
 import { deriveAlerts } from "./lib/alerts";
 
 export default function App() {
@@ -40,17 +43,20 @@ export default function App() {
     <div className="app-shell">
       <OperationsMap>
         <MapLayersController />
+        <TerrainLayer />
         <TopographyLayer />
+        <ManholeLayer />
         <WeatherLayer />
+        <RainfallHeatmapLayer />
+        <RadarLayer />
         <RouteLayer />
-        <DrainLayer />
         <CrewLayer />
       </OperationsMap>
-      <TopBar />
       <Sidebar />
       <MapControls />
       <Legend />
-      <StatusStrip />
+      <WeatherTimeline />
+      <Toast />
       <ModalRoot />
     </div>
   );

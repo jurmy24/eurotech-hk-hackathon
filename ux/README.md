@@ -25,13 +25,13 @@ graceful fallbacks if the network is unavailable.
 - **6 robot crews** moving along real streets on a seamless ~3-minute loop, rendered as
   triangular markers colored by alert level (AL-0…AL-5) with team-ID tags and heading.
 - **Live weather** — Open-Meteo precipitation sampled on a grid → semi-transparent rain cells;
-  drains near the heaviest forecast cells are highlighted (pulsing magenta).
+  the heaviest cells drive flooding alerts for at-risk drains.
 - **Layer toggles** (Weather / Street Map / Topography) that visibly change the map and
   **persist to localStorage**.
 - **Glass detail modals** (map stays fuzzily visible behind) for crews (full telemetry + route
   highlighted on the map), drains, and weather cells.
-- **Dispatch flow**: select a drain → *Recommend crew* (nearest available + ETA + risk) →
-  *Confirm* → appears in the queue, crew flips to active.
+- **Dispatch flow**: *Dispatched → Plan a dispatch* → pick a drain → *Recommend crew*
+  (nearest available + ETA + risk) → *Confirm* → appears in the queue, crew flips to active.
 - **Alerts & Incidents** and **System Health** panels; left rail with status, dispatch queue,
   crew counts/search, and layer toggles.
 
