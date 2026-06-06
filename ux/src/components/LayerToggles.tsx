@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
-import { CloudRain, Map as MapIcon, Mountain } from "lucide-react";
+import { CircleDot, CloudRain, Droplets, Map as MapIcon, Mountain } from "lucide-react";
 import { useOpsStore } from "../store/useOpsStore";
 import type { LayerKey } from "../types/operations";
 
-const ROWS: { key: LayerKey; label: string; icon: ReactNode; hint: string }[] = [
-  { key: "weather", label: "Weather", icon: <CloudRain size={16} />, hint: "Live rain cells" },
-  { key: "street", label: "Street Map", icon: <MapIcon size={16} />, hint: "Neon street network" },
-  { key: "topography", label: "Topography", icon: <Mountain size={16} />, hint: "Flood-risk terrain" },
+const ROWS: { key: LayerKey; label: string; icon: ReactNode }[] = [
+  { key: "weather", label: "Weather", icon: <CloudRain size={16} /> },
+  { key: "rainfall", label: "Rainfall (mm)", icon: <Droplets size={16} /> },
+  { key: "street", label: "Street Map", icon: <MapIcon size={16} /> },
+  { key: "topography", label: "Topography", icon: <Mountain size={16} /> },
+  { key: "manholes", label: "Manholes", icon: <CircleDot size={16} /> },
 ];
 
 export default function LayerToggles() {
@@ -20,10 +22,7 @@ export default function LayerToggles() {
         {ROWS.map((r) => (
           <div key={r.key} className="layer-row">
             <span className="layer-ico">{r.icon}</span>
-            <span className="layer-text">
-              <span>{r.label}</span>
-              <small>{r.hint}</small>
-            </span>
+            <span className="layer-name">{r.label}</span>
             <button
               role="switch"
               aria-checked={layers[r.key]}
