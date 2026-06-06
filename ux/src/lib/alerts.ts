@@ -58,7 +58,9 @@ export function deriveAlerts(
         kind: "weather_topography",
         level: "AL-3",
         title: `Weather × terrain — ${zone.name}`,
-        detail: `Rain (${wet.precipMaxMm.toFixed(1)} mm) forecast over low-lying ${zone.name}. Pre-position crews.`,
+        detail: `Rain (${wet.precipMaxMm.toFixed(1)} mm) forecast over low-lying ${zone.name}${
+          zone.minElevM != null ? ` (min ${zone.minElevM} m)` : ""
+        }. Pre-position crews.`,
         createdAt: nowIso,
       });
     }

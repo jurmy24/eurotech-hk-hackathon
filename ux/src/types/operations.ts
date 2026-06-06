@@ -108,6 +108,7 @@ export interface TopographyZone {
   name: string;
   riskLabel: string;
   polygon: LatLng[]; // ring (auto-closed)
+  minElevM?: number; // lowest sampled elevation in the zone (m), when elevation-derived
 }
 
 export type LayerKey = "street" | "weather" | "topography";

@@ -2,7 +2,7 @@ import maplibregl from "maplibre-gl";
 import { useEffect } from "react";
 import { useMapInstance } from "./OperationsMap";
 import { useOpsStore } from "../store/useOpsStore";
-import { TOPOGRAPHY_ZONES } from "../data/hkGeo";
+import { TOPOGRAPHY_ZONES } from "../lib/topography";
 import { ringToGeoJson } from "../lib/polygon";
 
 const SRC = "topo-zones";

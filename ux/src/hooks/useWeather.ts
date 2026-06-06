@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useOpsStore } from "../store/useOpsStore";
 import { fetchWeatherCells, fallbackWeatherCells, computeDrainRain } from "../lib/openMeteo";
 import { deriveAlerts } from "../lib/alerts";
-import { TOPOGRAPHY_ZONES } from "../data/hkGeo";
+import { TOPOGRAPHY_ZONES } from "../lib/topography";
 
 // Fetches live HK precipitation from Open-Meteo, refreshes every 5 min (and on
 // the manual Refresh button), then recomputes drain highlights + alerts.
