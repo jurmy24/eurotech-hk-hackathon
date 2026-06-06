@@ -1,0 +1,103 @@
+// Single editable source of seed operations data (brief §14).
+// Live crew positions/alert levels are overridden at runtime by the animation loop
+// (see hooks/useCrewAnimation.ts + data/crewMovement.csv).
+import type { RobotCrew, Drain, Dispatch } from "../types/operations";
+
+export const CREWS: RobotCrew[] = [
+  {
+    id: "CREW-01",
+    name: "Sweeper Alpha",
+    alertLevel: "AL-0",
+    location: { lat: 22.282, lng: 114.1588 },
+    headingDeg: 60,
+    batteryPct: 92,
+    status: "available",
+    comms: "online",
+    model: "RB-Sweeper v3",
+    crewSize: 2,
+  },
+  {
+    id: "CREW-02",
+    name: "Hydro Bravo",
+    alertLevel: "AL-1",
+    location: { lat: 22.2975, lng: 114.1722 },
+    headingDeg: 200,
+    batteryPct: 78,
+    status: "active",
+    activeDispatchId: "DSP-2001",
+    etaMinutes: 7,
+    comms: "online",
+    model: "RB-Jetter v2",
+    crewSize: 3,
+  },
+  {
+    id: "CREW-03",
+    name: "Cutter Charlie",
+    alertLevel: "AL-3",
+    location: { lat: 22.3193, lng: 114.1694 },
+    headingDeg: 280,
+    batteryPct: 54,
+    status: "active",
+    activeDispatchId: "DSP-2002",
+    etaMinutes: 0,
+    comms: "online",
+    model: "RB-Cutter v4",
+    crewSize: 2,
+  },
+  {
+    id: "CREW-04",
+    name: "Probe Delta",
+    alertLevel: "AL-2",
+    location: { lat: 22.2796, lng: 114.173 },
+    headingDeg: 120,
+    batteryPct: 33,
+    status: "servicing",
+    comms: "degraded",
+    model: "RB-Inspector v3",
+    crewSize: 1,
+  },
+  {
+    id: "CREW-05",
+    name: "Jet Echo",
+    alertLevel: "AL-0",
+    location: { lat: 22.28, lng: 114.185 },
+    headingDeg: 15,
+    batteryPct: 88,
+    status: "available",
+    comms: "online",
+    model: "RB-Jetter v2",
+    crewSize: 2,
+  },
+  {
+    id: "CREW-06",
+    name: "Scout Foxtrot",
+    alertLevel: "AL-4",
+    location: { lat: 22.3303, lng: 114.1622 },
+    headingDeg: 0,
+    batteryPct: 12,
+    status: "offline",
+    comms: "offline",
+    model: "RB-Scout v1",
+    crewSize: 1,
+  },
+];
+
+export const DRAINS: Drain[] = [
+  { id: "DRN-001", name: "Des Voeux Rd Central", location: { lat: 22.2835, lng: 114.1572 }, priority: "high", blockageRiskPct: 71, nearRainForecast: true, lastInspectedAt: "2026-06-05T18:40:00+08:00", district: "Central" },
+  { id: "DRN-002", name: "Harcourt Rd", location: { lat: 22.2788, lng: 114.164 }, priority: "medium", blockageRiskPct: 38, nearRainForecast: false, lastInspectedAt: "2026-06-05T22:10:00+08:00", district: "Admiralty" },
+  { id: "DRN-003", name: "Lockhart Rd", location: { lat: 22.2802, lng: 114.1735 }, priority: "critical", blockageRiskPct: 88, nearRainForecast: true, lastInspectedAt: "2026-06-04T09:05:00+08:00", district: "Wan Chai" },
+  { id: "DRN-004", name: "Yee Wo St", location: { lat: 22.2795, lng: 114.1858 }, priority: "high", blockageRiskPct: 64, nearRainForecast: true, lastInspectedAt: "2026-06-05T14:25:00+08:00", district: "Causeway Bay" },
+  { id: "DRN-005", name: "King's Rd", location: { lat: 22.2916, lng: 114.193 }, priority: "low", blockageRiskPct: 22, nearRainForecast: false, lastInspectedAt: "2026-06-06T07:50:00+08:00", district: "North Point" },
+  { id: "DRN-006", name: "Nathan Rd (TST)", location: { lat: 22.2968, lng: 114.1735 }, priority: "medium", blockageRiskPct: 45, nearRainForecast: false, lastInspectedAt: "2026-06-05T19:30:00+08:00", district: "Tsim Sha Tsui" },
+  { id: "DRN-007", name: "Argyle St", location: { lat: 22.3188, lng: 114.17 }, priority: "critical", blockageRiskPct: 92, nearRainForecast: true, lastInspectedAt: "2026-06-03T16:00:00+08:00", district: "Mong Kok" },
+  { id: "DRN-008", name: "Waterloo Rd", location: { lat: 22.3125, lng: 114.1712 }, priority: "high", blockageRiskPct: 69, nearRainForecast: true, lastInspectedAt: "2026-06-05T11:15:00+08:00", district: "Yau Ma Tei" },
+  { id: "DRN-009", name: "Cheung Sha Wan Rd", location: { lat: 22.3309, lng: 114.163 }, priority: "medium", blockageRiskPct: 51, nearRainForecast: false, lastInspectedAt: "2026-06-05T20:45:00+08:00", district: "Sham Shui Po" },
+  { id: "DRN-010", name: "Jordan Rd", location: { lat: 22.3052, lng: 114.1695 }, priority: "low", blockageRiskPct: 19, nearRainForecast: false, lastInspectedAt: "2026-06-06T06:20:00+08:00", district: "Jordan" },
+  { id: "DRN-011", name: "Chatham Rd", location: { lat: 22.3035, lng: 114.1828 }, priority: "medium", blockageRiskPct: 43, nearRainForecast: false, lastInspectedAt: "2026-06-05T13:05:00+08:00", district: "Hung Hom" },
+  { id: "DRN-012", name: "Prince Edward Rd", location: { lat: 22.324, lng: 114.1685 }, priority: "high", blockageRiskPct: 76, nearRainForecast: true, lastInspectedAt: "2026-06-04T21:35:00+08:00", district: "Prince Edward" },
+];
+
+export const DISPATCHES: Dispatch[] = [
+  { id: "DSP-2001", crewId: "CREW-02", drainId: "DRN-003", status: "en_route", createdAt: "2026-06-06T09:12:00+08:00", etaMinutes: 7, note: "High blockage + rain forecast" },
+  { id: "DSP-2002", crewId: "CREW-03", drainId: "DRN-007", status: "working", createdAt: "2026-06-06T08:40:00+08:00", etaMinutes: 0, note: "Critical blockage — cutting debris" },
+];

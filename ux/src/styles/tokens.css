@@ -1,0 +1,78 @@
+/* =====================================================================
+   DESIGN TOKENS — the whitelabel theming surface.
+   Reskin the entire interface by overriding these custom properties
+   (e.g. a client stylesheet can redefine :root or [data-theme="..."]).
+   ===================================================================== */
+:root {
+  /* Base surfaces */
+  --bg: #0a0f1a;
+  --bg-deep: #070b14;
+  --bg-grad-1: #0c1424;
+  --bg-grad-2: #080d17;
+
+  /* Glass panels */
+  --glass-bg: rgba(13, 22, 41, 0.55);
+  --glass-bg-strong: rgba(10, 17, 32, 0.80);
+  --glass-border: rgba(120, 200, 255, 0.16);
+  --glass-border-strong: rgba(120, 200, 255, 0.32);
+  --glass-blur: 16px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+
+  /* Text */
+  --text: #e8f1ff;
+  --text-dim: #9fb4d4;
+  --text-faint: #61789f;
+
+  /* Accents */
+  --cyan: #36e2ff;
+  --cyan-soft: #7af0ff;
+  --blue: #4d8cff;
+  --magenta: #ff3df2;
+  --magenta-soft: #ff8af6;
+
+  /* Glows */
+  --glow-cyan: 0 0 10px rgba(54, 226, 255, 0.55);
+  --glow-magenta: 0 0 12px rgba(255, 61, 242, 0.50);
+
+  /* Alert levels AL-0 .. AL-5 */
+  --al-0: #22e07a;
+  --al-1: #9ee84a;
+  --al-2: #f4d423;
+  --al-3: #ff9d2e;
+  --al-4: #ff6038;
+  --al-5: #ff2d4f;
+
+  /* Crew status */
+  --status-available: #22e07a;
+  --status-active: #36e2ff;
+  --status-servicing: #4d8cff;
+  --status-offline: #6b7a93;
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-pill: 999px;
+
+  /* Spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+
+  /* Typography */
+  --font-sans: "Inter", "Aptos", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, "Cascadia Code", monospace;
+
+  /* Layout */
+  --rail-w: 280px;
+  --topbar-h: 52px;
+
+  /* Z-index layers */
+  --z-map: 1;
+  --z-overlay: 10;
+  --z-panel: 20;
+  --z-modal: 100;
+}
